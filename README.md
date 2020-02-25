@@ -5,6 +5,7 @@
  - Mergulhe de cabeça no mundo Mobile. Aprenda a criar sua primeira App usando o Flutter. Crie telas com Widgets e implemente um fluxo inicial de uma lista e formulário de cadastro. Entenda os principais tipos de Widgets e organize o código do projeto.
 
  - <a href="https://github.com/rafaelcarvalhocaetano/Bytebank" target="_blank">Fundamentos de Flutter: Crie o seu primeiro App</a>
+  - <a href="https://github.com/rafaelcarvalhocaetano/FlutterTraining/tree/master/bytebank_widgets" target="_blank">Criando widgets, páginas e navegação com Flutter</a>
 
 ## 2 - Persistência de dados
 
