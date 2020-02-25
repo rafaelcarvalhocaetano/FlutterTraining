@@ -16,7 +16,7 @@
 
  - É difícil encontrar uma App que funcione apenas localmente. Eventualmente acabamos precisando integrar com algum serviço externo, alguma API. Nesta seção, você vai aprender a integrar sua App com serviços remotos, lidando também com possíveis erros comuns durante essa comunição.
 
- - Flutter com web API: integrando sua app mobile
+ - <a href="https://github.com/rafaelcarvalhocaetano/FlutterTraining/tree/master/bytebank_api" target="_blank">Flutter com web API: integrando sua app mobile</a>
  - Comunicação HTTP: Flutter com web API
 
 ## 4 - Testes automatizados
