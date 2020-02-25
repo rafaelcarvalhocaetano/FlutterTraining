@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 
 class TransactionsList extends StatelessWidget {
 
+  final Service service = Service();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -13,7 +15,7 @@ class TransactionsList extends StatelessWidget {
         title: Text('Transactions'),
       ),
       body: FutureBuilder<List<Transaction>> (
-        future: findAll(),
+        future: service.findAll(),
         builder: (context, snapshot) {
           switch(snapshot.connectionState) {
             case ConnectionState.none:
