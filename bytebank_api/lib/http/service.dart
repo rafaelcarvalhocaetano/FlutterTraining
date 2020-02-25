@@ -8,33 +8,11 @@ class Service {
   Future<List<Transaction>> findAll() async {
     final Response response = await client.get(baseUrl);
     final List<dynamic> decodedJson = jsonDecode(response.body);
-    final List<Transaction> transactions = List();
-
-    for(Map<String, dynamic> element in decodedJson) {
-//      final Map<String, dynamic> contactJson = element['contact'];
-//      final Transaction trt = Transaction(
-//          element['value'],
-//          Contact(
-//            0,
-//            contactJson['name'],
-//            contactJson['accountNumber'],
-//          )
-//      );
-      transactions.add(Transaction.fromJson(element));
-    }
-    return transactions;
+    return decodedJson.map((x) => Transaction.fromJson(x)).toList();
   }
 
   Future<Transaction> save(Transaction transaction) async {
-//    final Map<String, dynamic> transactionMap = {
-//      'value': transaction.value,
-//      'contact': {
-//        'name': transaction.contact.name,
-//        'accountNumber': transaction.contact.accountNumber
-//      }
-//    };
     final String transactionJSON = jsonEncode(transaction.toJson());
-
     final Response request = await client.post(
         baseUrl,
         headers: {
@@ -43,17 +21,6 @@ class Service {
         },
         body: transactionJSON
     );
-    final Map<String, dynamic> json = jsonDecode(request.body);
-    return Transaction.fromJson(json);
-//    final Map<String, dynamic> contactJson = json['contact'];
-//
-//    return Transaction(
-//      json['value'],
-//      Contact(
-//        0,
-//        contactJson['name'],
-//        contactJson['accountNumber'],
-//      ),
-//    );
+    return Transaction.fromJson(jsonDecode(request.body));
   }
 }
