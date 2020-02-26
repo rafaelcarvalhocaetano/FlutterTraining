@@ -1,3 +1,4 @@
+import 'package:bytebank_http/components/auth_dialog.dart';
 import 'package:bytebank_http/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
@@ -5,6 +6,7 @@ void main() => runApp(BytebankApp());
 
 
 class BytebankApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -16,7 +18,7 @@ class BytebankApp extends StatelessWidget {
                 textTheme: ButtonTextTheme.primary
             )
         ),
-        home: Dashboard()
+        home: AurhDialog()
     );
   }
 }
