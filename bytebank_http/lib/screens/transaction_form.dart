@@ -1,3 +1,4 @@
+import 'package:bytebank_http/components/auth_dialog.dart';
 import 'package:bytebank_http/http/service.dart';
 import 'package:bytebank_http/models/contact.dart';
 import 'package:bytebank_http/models/transaction.dart';
@@ -60,14 +61,19 @@ class _TransactionFormState extends State<TransactionForm> {
                 child: SizedBox(
                   width: double.maxFinite,
                   child: RaisedButton(
-                    child: Text('Transfer'), onPressed: () {
+                    child: Text('Transfer'),
+                    onPressed: () {
                       final double value = double.tryParse(_valueController.text);
                       final transactionCreated = Transaction(value, widget.contact);
-                      client.save(transactionCreated).then((x) {
-                        if (x != null) {
-                          Navigator.pop(context);
+                      showDialog(
+                        context: context,
+                        builder: (contextDialog) {
+                          return AuthDialog(onConfirm: (String password) {
+                            _save(transactionCreated, password, context);
+                            },
+                          );
                         }
-                      });
+                      );
                     },
                   ),
                 ),
@@ -77,5 +83,13 @@ class _TransactionFormState extends State<TransactionForm> {
         ),
       ),
     );
+
+  }
+  void _save(Transaction transactionCreated, String password, BuildContext context) async {
+    client.save(transactionCreated, password).then((transaction) {
+      if(transaction != null){
+        Navigator.pop(context);
+      }
+    });
   }
 }

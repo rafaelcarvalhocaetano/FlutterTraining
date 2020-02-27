@@ -11,13 +11,14 @@ class Service {
     return decodedJson.map((x) => Transaction.fromJson(x)).toList();
   }
 
-  Future<Transaction> save(Transaction transaction) async {
+  Future<Transaction> save(Transaction transaction, password) async {
+    print('SENHA SERVICE ' + password);
     final String transactionJSON = jsonEncode(transaction.toJson());
     final Response request = await client.post(
         baseUrl,
         headers: {
           'Content-type': 'application/json',
-          'password': '1000'
+          'password': password
         },
         body: transactionJSON
     );

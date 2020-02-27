@@ -1,4 +1,3 @@
-import 'package:bytebank_http/components/auth_dialog.dart';
 import 'package:bytebank_http/screens/dashboard.dart';
 import 'package:flutter/material.dart';
 
@@ -18,7 +17,7 @@ class BytebankApp extends StatelessWidget {
                 textTheme: ButtonTextTheme.primary
             )
         ),
-        home: AurhDialog()
+        home: Dashboard()
     );
   }
 }
