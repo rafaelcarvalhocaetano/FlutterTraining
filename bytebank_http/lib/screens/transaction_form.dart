@@ -1,3 +1,7 @@
+import 'dart:async';
+import 'dart:io';
+import 'package:uuid/uuid.dart';
+
 import 'package:bytebank_http/components/auth_dialog.dart';
 import 'package:bytebank_http/components/response_dialog.dart';
 import 'package:bytebank_http/http/service.dart';
@@ -15,10 +19,10 @@ class TransactionForm extends StatefulWidget {
 }
 
 class _TransactionFormState extends State<TransactionForm> {
-
   final Service client = Service();
 
   final TextEditingController _valueController = TextEditingController();
+  final String uuid = Uuid().v4();
 
   @override
   Widget build(BuildContext context) {
@@ -64,40 +68,77 @@ class _TransactionFormState extends State<TransactionForm> {
                   child: RaisedButton(
                     child: Text('Transfer'),
                     onPressed: () {
-                      final double value = double.tryParse(_valueController.text);
-                      final transactionCreated = Transaction(value, widget.contact);
+                      final double value =
+                      double.tryParse(_valueController.text);
+                      final transactionCreated =
+                      Transaction(uuid, value, widget.contact);
                       showDialog(
-                        context: context,
-                        builder: (contextDialog) {
-                          return AuthDialog(onConfirm: (String password) {
-                            _save(transactionCreated, password, context);
-                            },
-                          );
-                        }
+                          context: context,
+                          builder: (contextDialog) {
+                            return AuthDialog(
+                              onConfirm: (String password) {
+                                _save(transactionCreated, password, context);
+                              },
+                            );
+                          },
                       );
                     },
                   ),
                 ),
-              )
+              ),
             ],
           ),
         ),
       ),
     );
-
   }
-  void _save(Transaction transactionCreated, String password, BuildContext context) async {
-    final Transaction transaction = await client.save(transactionCreated, password).catchError((error) {
-        showDialog(context: context, builder: (ctx) {
-          return FailureDialog(error.message);
-        });
-    }, test: (error) => error is Exception);
 
-    if(transaction != null){
-      await showDialog(context: context, builder: (ctxDlg) {
-        return SuccessDialog('Successful transaction');
-      });
+  void _save(
+      Transaction transactionCreated,
+      String password,
+      BuildContext context,
+      ) async {
+    Transaction transaction = await _send(
+      transactionCreated,
+      password,
+      context,
+    );
+    _showSuccessfulMessage(transaction, context);
+  }
+  Future _showSuccessfulMessage(
+      Transaction transaction, BuildContext context) async {
+    if (transaction != null) {
+      await showDialog(
+          context: context,
+          builder: (contextDialog) {
+            return SuccessDialog('successful transaction');
+          });
       Navigator.pop(context);
     }
+  }
+
+  Future<Transaction> _send(Transaction transactionCreated, String password,
+      BuildContext context) async {
+    final Transaction transaction =
+    await client.save(transactionCreated, password).catchError((e) {
+      _showFailureMessage(context, message: e.message);
+    }, test: (e) => e is HttpException).catchError((e) {
+      _showFailureMessage(context, message: 'timeout submitting the transaction');
+    }, test: (e) => e is TimeoutException).catchError((e) {
+      _showFailureMessage(context);
+    });
+    return transaction;
+  }
+
+  void _showFailureMessage(
+      BuildContext context, {
+        String message = 'Unknown error',
+      }
+      ) {
+    showDialog(
+        context: context,
+        builder: (contextDialog) {
+          return FailureDialog(message);
+        });
   }
 }

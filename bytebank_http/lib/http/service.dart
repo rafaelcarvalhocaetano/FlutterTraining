@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:bytebank_http/http/client.dart';
 import 'package:bytebank_http/models/transaction.dart';
@@ -24,15 +25,20 @@ class Service {
     );
     if (request.statusCode == 200) {
       return Transaction.fromJson(jsonDecode(request.body));
-    } else {
-      _thowHttpError(request.statusCode);
     }
+    throw HttpException(_getMessage(request.statusCode));
   }
 
-  void _thowHttpError(int statusCode) => throw Exception(_statusCodeResponse[statusCode]);
+  String _getMessage(int statusCode) {
+    if (_statusCodeResponse.containsKey((statusCode))) {
+      return _statusCodeResponse[statusCode];
+    }
+    return 'Unknown error';
+  }
 
   static final Map<int, String> _statusCodeResponse = {
     400: 'There was an error submitting transaction',
-    401: 'Authentication failed'
+    401: 'Authentication failed',
+    409: 'Transaction always exists'
   };
 }
