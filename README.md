@@ -25,4 +25,8 @@
  - Um App de qualidade, muito provavelmente, mantém uma bateria de testes capaz de cobrir diversos cenários do App, seja uma regra de negócio simples, como também, um fluxo inteiro. Nesta seção, você vai conhecer quais são categorias de testes do Flutter, diferenças, trade-off e vai aprender a criar seus primeiros testes de unidade e de Widget com mocks.
 
   - <a href="https://github.com/rafaelcarvalhocaetano/FlutterTraining/tree/master/bytebank_tdd" target="_blank">Testes de unidade e Widget com mocks: Boas práticas no Flutter</a>
+  
+  
+#### RUN ICON FLUTTER
+flutter pub run flutter_launcher_icons:main
  
