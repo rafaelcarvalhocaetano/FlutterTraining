@@ -1,6 +1,6 @@
 import 'package:http/http.dart';
 
-import 'package:bytebank_http/http/interceptor.dart';
+import 'package:bytebank_tdd/http/interceptor.dart';
 import 'package:http_interceptor/http_interceptor.dart';
 
 final Client client = HttpClientWithInterceptor.build(
