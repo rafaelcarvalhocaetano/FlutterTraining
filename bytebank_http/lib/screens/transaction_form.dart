@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:bytebank_http/components/progress.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:bytebank_http/components/auth_dialog.dart';
@@ -20,9 +21,9 @@ class TransactionForm extends StatefulWidget {
 
 class _TransactionFormState extends State<TransactionForm> {
   final Service client = Service();
-
   final TextEditingController _valueController = TextEditingController();
   final String uuid = Uuid().v4();
+  bool _sending = false;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +37,15 @@ class _TransactionFormState extends State<TransactionForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Visibility(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Progress(
+                    message: 'Sending...',
+                  ),
+                ),
+                visible: _sending,
+              ),
               Text(
                 widget.contact.name,
                 style: TextStyle(
@@ -69,9 +79,12 @@ class _TransactionFormState extends State<TransactionForm> {
                     child: Text('Transfer'),
                     onPressed: () {
                       final double value =
-                      double.tryParse(_valueController.text);
-                      final transactionCreated =
-                      Transaction(uuid, value, widget.contact);
+                          double.tryParse(_valueController.text);
+                      final transactionCreated = Transaction(
+                        uuid,
+                        value,
+                        widget.contact,
+                      );
                       showDialog(
                           context: context,
                           builder: (contextDialog) {
@@ -85,7 +98,7 @@ class _TransactionFormState extends State<TransactionForm> {
                     },
                   ),
                 ),
-              ),
+              )
             ],
           ),
         ),
@@ -94,10 +107,10 @@ class _TransactionFormState extends State<TransactionForm> {
   }
 
   void _save(
-      Transaction transactionCreated,
-      String password,
-      BuildContext context,
-      ) async {
+    Transaction transactionCreated,
+    String password,
+    BuildContext context,
+  ) async {
     Transaction transaction = await _send(
       transactionCreated,
       password,
@@ -105,40 +118,50 @@ class _TransactionFormState extends State<TransactionForm> {
     );
     _showSuccessfulMessage(transaction, context);
   }
+
   Future _showSuccessfulMessage(
       Transaction transaction, BuildContext context) async {
     if (transaction != null) {
       await showDialog(
           context: context,
           builder: (contextDialog) {
-            return SuccessDialog('successful transaction');
-          });
+            return SuccessDialog('Successful Transaction');
+          },
+      );
       Navigator.pop(context);
     }
   }
 
   Future<Transaction> _send(Transaction transactionCreated, String password,
       BuildContext context) async {
+    setState(() {
+      _sending = false;
+    });
     final Transaction transaction =
-    await client.save(transactionCreated, password).catchError((e) {
+        await client.save(transactionCreated, password).catchError((e) {
       _showFailureMessage(context, message: e.message);
     }, test: (e) => e is HttpException).catchError((e) {
-      _showFailureMessage(context, message: 'timeout submitting the transaction');
+      _showFailureMessage(context,
+          message: 'timeout submitting the transaction');
     }, test: (e) => e is TimeoutException).catchError((e) {
       _showFailureMessage(context);
+    }).whenComplete(() {
+      setState(() {
+        _sending = false;
+      });
     });
     return transaction;
   }
 
   void _showFailureMessage(
-      BuildContext context, {
-        String message = 'Unknown error',
-      }
-      ) {
+    BuildContext context, {
+    String message = 'Unknown error',
+  }) {
     showDialog(
         context: context,
         builder: (contextDialog) {
           return FailureDialog(message);
-        });
+        },
+    );
   }
 }

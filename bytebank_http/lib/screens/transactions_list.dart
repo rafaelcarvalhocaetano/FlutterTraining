@@ -55,7 +55,10 @@ class TransactionsList extends StatelessWidget {
                   );
                 }
               }
-              return CenteredMessage('No transactions found', icon: Icons.warning,);
+              return CenteredMessage(
+                  'No transactions found',
+                  icon: Icons.warning
+              );
               break;
           }
           return CenteredMessage('Unknown error APP NU...');

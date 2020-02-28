@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 
 class ContactList extends StatelessWidget {
 
-  final Service service = Service();
+//  final Service service = Service();
   final ContactDAO _dao = ContactDAO();
 
   @override

@@ -25,15 +25,10 @@ class _AuthDialogState extends State<AuthDialog> {
         controller: _password,
         obscureText: true,
         maxLength: 4,
+        decoration: InputDecoration(border: OutlineInputBorder()),
         textAlign: TextAlign.center,
         keyboardType: TextInputType.number,
-        decoration: InputDecoration(
-          border: OutlineInputBorder()
-        ),
-        style: TextStyle(
-          fontSize: 24,
-          letterSpacing: 32
-        ),
+        style: TextStyle(fontSize: 64, letterSpacing: 24),
       ),
       actions: <Widget>[
         FlatButton(

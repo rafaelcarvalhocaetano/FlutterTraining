@@ -64,14 +64,9 @@ class _ContactFormState extends State<ContactForm> {
                   onPressed: () {
                     final String name = _nameController.text;
                     final int account = int.tryParse(_accountNumberController.text);
-
-                    debugPrint("VALOR " + name);
-                    debugPrint("account " + account.toString());
                     if (name.length > 0 || account != null) {
                       final Contact contact = Contact(0, name, account);
-                      _dao.save(contact).then((x) {
-                        Navigator.pop(context);
-                      });
+                      _dao.save(contact).then((x) => Navigator.pop(context));
                     }
                   },
                 ),

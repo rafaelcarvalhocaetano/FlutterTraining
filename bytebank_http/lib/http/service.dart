@@ -6,6 +6,7 @@ import 'package:bytebank_http/models/transaction.dart';
 import 'package:http/http.dart';
 
 class Service {
+
   Future<List<Transaction>> findAll() async {
     final Response response = await client.get(baseUrl);
     final List<dynamic> decodedJson = jsonDecode(response.body);
@@ -13,8 +14,10 @@ class Service {
   }
 
   Future<Transaction> save(Transaction transaction, password) async {
-    print('SENHA SERVICE ' + password);
+
     final String transactionJSON = jsonEncode(transaction.toJson());
+    await Future.delayed(Duration(seconds: 2));
+
     final Response request = await client.post(
         baseUrl,
         headers: {
@@ -41,4 +44,8 @@ class Service {
     401: 'Authentication failed',
     409: 'Transaction always exists'
   };
+}
+class HttpException implements Exception {
+  final String message;
+  HttpException(this.message);
 }
