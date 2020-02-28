@@ -18,10 +18,15 @@
  - É difícil encontrar uma App que funcione apenas localmente. Eventualmente acabamos precisando integrar com algum serviço externo, alguma API. Nesta seção, você vai aprender a integrar sua App com serviços remotos, lidando também com possíveis erros comuns durante essa comunição.
 
  - <a href="https://github.com/rafaelcarvalhocaetano/FlutterTraining/tree/master/bytebank_api" target="_blank">Flutter com web API: integrando sua app mobile</a>
- - Comunicação HTTP: Flutter com web API
+ - <a href="https://github.com/rafaelcarvalhocaetano/FlutterTraining/tree/master/bytebank_http" target="_blank">Comunicação HTTP: Flutter com web API</a>
 
 ## 4 - Testes automatizados
 
  - Um App de qualidade, muito provavelmente, mantém uma bateria de testes capaz de cobrir diversos cenários do App, seja uma regra de negócio simples, como também, um fluxo inteiro. Nesta seção, você vai conhecer quais são categorias de testes do Flutter, diferenças, trade-off e vai aprender a criar seus primeiros testes de unidade e de Widget com mocks.
 
- - Testes de unidade e Widget com mocks: Boas práticas no Flutter
+  - <a href="https://github.com/rafaelcarvalhocaetano/FlutterTraining/tree/master/bytebank_tdd" target="_blank">Testes de unidade e Widget com mocks: Boas práticas no Flutter</a>
+  
+  
+#### RUN ICON FLUTTER
+flutter pub run flutter_launcher_icons:main
+ 
