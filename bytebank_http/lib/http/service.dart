@@ -22,6 +22,17 @@ class Service {
         },
         body: transactionJSON
     );
-    return Transaction.fromJson(jsonDecode(request.body));
+    if (request.statusCode == 200) {
+      return Transaction.fromJson(jsonDecode(request.body));
+    } else {
+      _thowHttpError(request.statusCode);
+    }
   }
+
+  void _thowHttpError(int statusCode) => throw Exception(_statusCodeResponse[statusCode]);
+
+  static final Map<int, String> _statusCodeResponse = {
+    400: 'There was an error submitting transaction',
+    401: 'Authentication failed'
+  };
 }
