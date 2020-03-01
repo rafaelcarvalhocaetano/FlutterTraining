@@ -1,3 +1,4 @@
+import 'package:bytebank_tdd/dao/contact_dao.dart';
 import 'package:bytebank_tdd/screens/contacts_list.dart';
 import 'package:bytebank_tdd/screens/transactions_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -6,48 +7,66 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 
 class Dashboard extends StatelessWidget {
+
+
+  final ContactDAO contactDAO;
+
+  Dashboard({
+    @required this.contactDAO
+  });
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.purple[700],
-      body: Container(
-        width: MediaQuery.of(context).size.width * 10,
-        height: MediaQuery.of(context).size.height * 10,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              padding: EdgeInsets.only(top: 64.0),
+      body: LayoutBuilder(
+        builder: (ctx, constrainst) => SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: constrainst.maxHeight,
+            ),
+            child: Container(
+              width: MediaQuery.of(context).size.width * 10,
+              height: MediaQuery.of(context).size.height * 10,
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Image.asset('images/nu_fundo.png'),
-                  Text('TDD', style: TextStyle(
-                    fontSize: 32.0,
-                    color: Colors.white
-                  ),)
+                  SingleChildScrollView(
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.only(top: 64.0),
+                    child: Column(
+                      children: <Widget>[
+                        Image.asset('images/nu_fundo.png'),
+                        Text('TDD', style: TextStyle(
+                          fontSize: 32.0,
+                          color: Colors.white
+                        ),)
+                      ],
+                    ),
+                  ),
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: <Widget>[
+                        FeatureItem(
+                          'Transfer',
+                          Icons.monetization_on,
+                          onClick: () => _showContactsList(context),
+                        ),
+                        FeatureItem(
+                          'Transaction Feed',
+                          Icons.description,
+                          onClick: () => _showTransactionsList(context),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  _FeatureItem(
-                    'Transfer',
-                    Icons.monetization_on,
-                    onClick: () => _showContactsList(context),
-                  ),
-                  _FeatureItem(
-                    'Transaction Feed',
-                    Icons.description,
-                    onClick: () => _showTransactionsList(context),
-                  ),
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -69,13 +88,13 @@ class Dashboard extends StatelessWidget {
   }
 }
 
-class _FeatureItem extends StatelessWidget {
+class FeatureItem extends StatelessWidget {
 
   final String labelText;
   final IconData iconText;
   final Function onClick;
 
-  _FeatureItem(this.labelText, this.iconText, {this.onClick});
+  FeatureItem(this.labelText, this.iconText, {this.onClick});
 
   @override
   Widget build(BuildContext context) {

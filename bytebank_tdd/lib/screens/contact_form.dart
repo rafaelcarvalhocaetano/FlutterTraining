@@ -4,8 +4,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class ContactForm extends StatefulWidget {
+
+  final ContactDAO contactDAO;
+
+  ContactForm({
+    @required this.contactDAO
+  });
+
+
   @override
-  _ContactFormState createState() => _ContactFormState();
+  _ContactFormState createState() => _ContactFormState(contactDAO: this.contactDAO);
 }
 
 class _ContactFormState extends State<ContactForm> {
@@ -13,7 +21,13 @@ class _ContactFormState extends State<ContactForm> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _accountNumberController = TextEditingController();
 
-  final ContactDAO _dao = ContactDAO();
+//  final ContactDAO _dao = ContactDAO();
+
+  final ContactDAO contactDAO;
+
+  _ContactFormState({
+    @required this.contactDAO
+  });
 
   final nameText = 'Full name';
   final accountText = 'Account Number';
@@ -66,7 +80,7 @@ class _ContactFormState extends State<ContactForm> {
                     final int account = int.tryParse(_accountNumberController.text);
                     if (name.length > 0 || account != null) {
                       final Contact contact = Contact(0, name, account);
-                      _dao.save(contact).then((x) => Navigator.pop(context));
+                      _save(contact, context);
                     }
                   },
                 ),
@@ -76,5 +90,9 @@ class _ContactFormState extends State<ContactForm> {
         ),
       ),
     );
+  }
+  _save(Contact contact, BuildContext c) async {
+    await contactDAO.save(contact);
+    Navigator.pop(c);
   }
 }

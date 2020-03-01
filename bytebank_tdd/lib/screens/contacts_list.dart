@@ -13,6 +13,12 @@ class ContactList extends StatelessWidget {
 //  final Service service = Service();
   final ContactDAO _dao = ContactDAO();
 
+  final ContactDAO contactDAO;
+
+  ContactList({
+  @required this.contactDAO
+  });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +65,7 @@ class ContactList extends StatelessWidget {
           Navigator.of(context)
               .push(
                 MaterialPageRoute(
-                  builder: (x) => ContactForm(),
+                  builder: (x) => ContactForm(contactDAO: contactDAO,),
                 ),
               );
         },

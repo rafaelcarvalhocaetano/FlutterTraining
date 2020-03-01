@@ -33,6 +33,7 @@ dev_dependencies:
   http:
   http_interceptor:
   uuid:
+  mockito:
 
 flutter_icons:
   image_path: "images/nu.png"
